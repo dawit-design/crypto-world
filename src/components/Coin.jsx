@@ -19,10 +19,16 @@ function Coin(){
     
     return (
         <div className = "coin-list">
-            <h1>{coins[0].name} - {coins[0].symbol}</h1>
+            {/* <h1>{coins[0].name} - {coins[0].symbol}</h1>
             <h1>$ {coins[0].current_price} </h1>
-            <h3>{coins[0].market_cap_change_24h} - % {coins[0].market_cap_change_percentage_24h}</h3>
-            <img src={coins[0].image}/>
+            <img src={coins[0].image}/> */}
+            {coins.map((coin) => (
+                <div key={coin.id} className="coins"> 
+                 <h2>{coin.name}</h2>
+                 <h3>{coins[0].market_cap_change_percentage_24h.toFixed(2)} %</h3>
+                 <img src={coin.image}/>
+                </div>
+            ))}
         </div>
     )
 }
