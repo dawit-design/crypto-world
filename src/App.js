@@ -2,6 +2,7 @@ import './App.css';
 
 import Coin from './components/Coin'
 import Home from './components/Home'
+import Table from './components/Table'
 
 function App() {
   
@@ -13,7 +14,7 @@ function App() {
        <div class="Crypto List">
         
           <Coin />
-          {/* <Home /> */}
+          
         
        </div>
     </div>

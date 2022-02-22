@@ -1,6 +1,7 @@
 // import {Link} from "react-router-dom";
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import { useTable, useSortBy } from 'react-table';
 import {api} from '../services/index'
 
 function Coin(){
@@ -15,12 +16,11 @@ function Coin(){
     }
     getCoins()
   },[])
+  
     if(!currencies) return null
     
     return (
         <div className = "coin-list">
-            {/* <h1>{coins[0].name} - {coins[0].symbol}</h1>
-            <img src={coins[0].image}/> */}
             {currencies.map((currency) => (
                 <div key={currency.id} className="coins"> 
                  <img src={currency.image}/>
