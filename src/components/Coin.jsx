@@ -37,7 +37,7 @@ function Coin(){
                     </thead>
                     <tbody>
                         <tr>
-                        <td><img src={currency.image}/> - <h2>{currency.name}- {currency.symbol}</h2> </td>
+                        <td> <h2> <img src={currency.image}/>  {currency.name} - {currency.symbol}</h2> </td>
                         <td><h3>$ {currency.current_price} </h3></td>
                         <td><h3>$ {currency.market_cap_change_24h} </h3></td>
                         <td><h3>{currency.market_cap_change_percentage_24h.toFixed(2)} %</h3></td>
