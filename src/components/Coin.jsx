@@ -6,15 +6,24 @@ import {api} from '../services/index'
 
 function Coin(){
     const [currencies, setCurrencies] = useState([])
-   
+   const [search, setSearch] = useState("")
+   const [filterCurrency, setFilterCurrency] = useState([])
   useEffect(() => {
       const getCoins = async () => {
       const response = await axios.get(api)
-      console.log(response.data[0])
+    //   console.log(response.data[0])
       setCurrencies(response.data)
+      if(response.data) {
+          setFilterCurrency(
+          response.data.filter((currency) => {
+            // console.log("shoot me now");
+            return currency.name?.toLowerCase().includes(search.toLocaleLowerCase());
+          })
+        );
+      }
     }
     getCoins()
-  },[])
+  },[search])
 
   const formatDollar = (number, maximumSignificantDigits) =>
     new Intl.NumberFormat(
@@ -29,7 +38,18 @@ function Coin(){
     
     return (
         <div className = "coin-list">
-            
+        <input 
+        placeholder="Search Crypto" 
+        onChange={e => setSearch(e.target.value)} 
+        style={{
+            textAlign: 'left',
+            borderColor: 'black',
+            fontSize: 18,
+            borderRadius: 3,
+            margin: 3,
+            paddingLeft: 10
+            }}
+        />
                 <Table  striped bordered hover variant="dark">
                     <thead>
                         <tr>
@@ -40,7 +60,7 @@ function Coin(){
                         </tr>
                     </thead>
                     <tbody style={{align: 'center', }}>
-                            {currencies.map((currency) => (
+                            {filterCurrency.map((currency) => (
                                 <tr key={currency.id}>
                                 <td><img src={currency.image} style={{width: 25, height: 25, marginRight: 10}}/> {currency.symbol}</td>
                                 <td>$ {formatDollar(currency.current_price, 20)}</td>
