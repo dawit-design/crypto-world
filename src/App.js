@@ -1,7 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Coin from './components/Coin'
-import Home from './components/Home'
+import Catagory from './components/Catagory'
 
 
 function App() {
@@ -13,8 +13,8 @@ function App() {
       <h1>Crypto World</h1>
        <div class="Crypto List">
         
-          <Coin />
-          {/* <Home /> */}
+         <Coin />
+          {/* <Catagory/>  */}
         
        </div>
     </div>
