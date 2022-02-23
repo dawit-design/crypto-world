@@ -19,14 +19,8 @@ function Coin(){
     
     return (
         <div className = "coin-list">
-            {currencies.map((currency) => (
-                <div key={currency.id} className="coins"> 
-                 {/* <img src={currency.image}/>
-                 <h2>{currency.name}</h2>
-                 <h3>{currency.symbol}</h3>
-                 
-                  */}
-                <Table striped bordered hover variant="dark">
+            
+                <Table  striped bordered hover variant="dark">
                     <thead>
                         <tr>
                         <th>Name</th>
@@ -35,17 +29,17 @@ function Coin(){
                         <th>Marekt Cap</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                        <td> <h2> <img src={currency.image}/>  {currency.name} - {currency.symbol}</h2> </td>
-                        <td><h3>$ {currency.current_price} </h3></td>
-                        <td><h3>$ {currency.market_cap_change_24h} </h3></td>
-                        <td><h3>{currency.market_cap_change_percentage_24h.toFixed(2)} %</h3></td>
-                        </tr>
+                    <tbody style={{align: 'center', }}>
+                            {currencies.map((currency) => (
+                                <tr key={currency.id}>
+                                <td><img src={currency.image} style={{width: 25, height: 25, marginRight: 10}}/>  {currency.name} - {currency.symbol}</td>
+                                <td>$ {currency.current_price}</td>
+                                <td > <span className={currency.market_cap_change_percentage_24h > 0 ?( 'text-success'): 'text-danger' }> {currency.market_cap_change_percentage_24h} % </span></td>
+                                <td>$ {currency.market_cap_change_24h}</td>
+                                </tr>
+                            ))}
                     </tbody>
-        </Table>
-                </div>
-            ))}
+                </Table>
         </div>
     )
 }
