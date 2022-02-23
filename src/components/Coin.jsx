@@ -15,6 +15,16 @@ function Coin(){
     }
     getCoins()
   },[])
+
+  const formatDollar = (number, maximumSignificantDigits) =>
+    new Intl.NumberFormat(
+        'en-US',
+        {
+            style: 'currency',
+            currency: 'usd',
+            maximumSignificantDigits
+        })
+        .format(number)
     if(!currencies) return null
     
     return (
@@ -32,10 +42,10 @@ function Coin(){
                     <tbody style={{align: 'center', }}>
                             {currencies.map((currency) => (
                                 <tr key={currency.id}>
-                                <td><img src={currency.image} style={{width: 25, height: 25, marginRight: 10}}/>  {currency.name} - {currency.symbol}</td>
-                                <td>$ {currency.current_price}</td>
-                                <td > <span className={currency.market_cap_change_percentage_24h > 0 ?( 'text-success'): 'text-danger' }> {currency.market_cap_change_percentage_24h} % </span></td>
-                                <td>$ {currency.market_cap_change_24h}</td>
+                                <td><img src={currency.image} style={{width: 25, height: 25, marginRight: 10}}/> {currency.symbol}</td>
+                                <td>$ {formatDollar(currency.current_price, 20)}</td>
+                                <td > <span className={currency.market_cap_change_percentage_24h > 0 ?( 'text-success'): 'text-danger' }> {currency.market_cap_change_percentage_24h.toFixed(2)} % </span></td>
+                                <td>$ {formatDollar(currency.market_cap_change_24h, 12)}</td>
                                 </tr>
                             ))}
                     </tbody>
