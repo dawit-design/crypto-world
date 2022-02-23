@@ -1,136 +1,98 @@
-// import React, { useState, useEffect } from 'react';
-// import { useTable, useSortBy } from 'react-table';
-// import axios from 'axios';
-// import {api} from '../services/index'
+// import React, { useState, useEffect, useRef } from "react";
+// import Dashboard from "./Dashboard";
+// import { formatData } from "../services/utils";
+// import {api, marketChartApi, hisoricalDataApi} from '../services/index'
+// // import "./styles.css";
+
+// export default function Home() {
+//   const [currencies, setcurrencies] = useState([]);
+//   const [pair, setpair] = useState("");
+//   const [price, setprice] = useState("0.00");
+//   const [pastData, setpastData] = useState({});
+//   const ws = useRef(null);
+//   let first = useRef(false);
+
+//    useEffect(() => {
+//     // ws.current = new WebSocket("wss://ws-feed.pro.coinbase.com");
+
+//     let pairs = [];
+
+//     const apiCall = async () => {
+//       await fetch(api)
+//         .then((res) => res.json())
+//         .then((data) => (pairs = data));
+//     //   let filtered = pairs.filter((pair) => {
+//     //     if (pair.current_price === "USD") {
+//     //       return pair;
+//     //     }
+//     //   });
+//     //   console.log(filtered)
+
+//       pairs= pairs.sort((a, b) => {
+//         if (a.current_price < b.current_price) {
+//           return -1;
+//         }
+//         if (a.current_price> b.current_price) {
+//           return 1;
+//         }
+//         return 0;
+//       });
+//       console.log(pairs)
+
+      
+//       setcurrencies(pairs);
+
+//       first.current = true;
+//     };
+
+//     apiCall();
+//   }, []); 
 
 
-// function Table () {
-//     const [currencies, setCurrencies] = useState('')
-   
-//     let coinName = []
-//       let coinPrice = []
-//       let coinChange = []
-//       let coinMarketCap = []
-//   useEffect(() => {
-//     const getCoins = async () => {
-//       const resp = await axios.get(api)
-//       for(const dataObj of resp.data){
-//           coinName.push(dataObj.name)
-//           coinPrice.push(dataObj.current_price)
-//           coinChange.push(dataObj.market_cap_change_percentage_24h)
-//           coinMarketCap.push(dataObj.market_cap)
-//       }
-//       console.log(resp.data[0])
-//       setCurrencies(resp.data)
+//    useEffect(() => {
+//        //prevents this hook from running on initial render
+//     if (!first.current) {
+      
+//       return;
 //     }
-//     getCoins()
-//   },[])
-//     if(!currencies) return null
 
-//  const data = React.useMemo(
-//      () => [
-//        {
-//          col1: coinName,
-//          col2: coinPrice,
-//          col3: coinChange,
-//          col3: coinMarketCap
-//        },
-//     //    {
-//     //      col1: 'Vilnius',
-//     //      col2: '30',
-//     //      col3: 'rain',
-//     //    },
-//     //    {
-//     //      col1: 'London',
-//     //      col2: '23',
-//     //      col3: 'rain',
-//     //    },
-//      ],
-//      []
-//  )
+    
+//     let msg = {
+//       type: "subscribe",
+//       product_ids: [pair],
+//       channels: ["ticker"]
+//     };
+//     let jsonMsg = JSON.stringify(msg);
+//     ws.current.send(jsonMsg);
 
-//  const columns = React.useMemo(
-//      () => [
-//        {
-//          Header: 'Name',
-//          accessor: 'col1', // accessor is the "key" in the data
-//        },
-//        {
-//          Header: 'Price',
-//          accessor: 'col2',
-//        },
-//        {
-//          Header: 'Change',
-//          accessor: 'col3', // accessor is the "key" in the data
-//        },
-//        {
-//          Header: 'Market Cap',
-//          accessor: 'col4', // accessor is the "key" in the data
-//        },
-//      ],
-//      []
-//  )
+//     // let historicalDataURL = `${url}/products/${pair}/candles?granularity=86400`;
+//     const fetchHistoricalData = async () => {
+//       let dataArr = [];
+//       await fetch(historicalDataURL)
+//         .then((res) => res.json())
+//         .then((data) => (dataArr = data));
+      
+//       let formattedData = formatData(dataArr);
+//       setpastData(formattedData);
+//     };
 
-//  const {
-//    getTableProps,
-//    getTableBodyProps,
-//    headerGroups,
-//    rows,
-//    prepareRow,
-//  } = useTable({ columns, data }, useSortBy);
+//     fetchHistoricalData();
 
-//  return (
-//      <div>
-//        <table {...getTableProps()} style={{ border: 'solid 1px black' }}>
-//          <thead>
-//          {headerGroups.map(headerGroup => (
-//              <tr {...headerGroup.getHeaderGroupProps()}>
-//                {headerGroup.headers.map(column => (
-//                    <th
-//                        {...column.getHeaderProps(column.getSortByToggleProps())}
-//                        style={{
-//                          borderBottom: 'solid 3px red',
-//                          color: 'black',
-//                        }}
-//                    >
-//                      {column.render('Header')}
-//                      <span>
-//                        {column.isSorted
-//                            ? column.isSortedDesc
-//                                ? '🔽'
-//                                : '🔼'
-//                            : ''}
-//                     </span>
-//                    </th>
-//                ))}
-//              </tr>
-//          ))}
-//          </thead>
-//          <tbody {...getTableBodyProps()}>
-//          {rows.map(row => {
-//            prepareRow(row)
-//            return (
-//                <tr {...row.getRowProps()}>
-//                  {row.cells.map(cell => {
-//                    return (
-//                        <td
-//                            {...cell.getCellProps()}
-//                            style={{
-//                              padding: '10px',
-//                              border: 'solid 1px gray',
-//                            }}
-//                        >
-//                          {cell.render('Cell')}
-//                        </td>
-//                    )
-//                  })}
-//                </tr>
-//            )
-//          })}
-//          </tbody>
-//        </table>
-//      </div>
-//  );
+//     // ws.current.onmessage = (e) => {
+//     //   let data = JSON.parse(e.data);
+//     //   if (data.type !== "ticker") {
+//     //     return;
+//     //   }
+// //every time we receive an even from the websocket for our currency pair, update the price in state
+
+//       if (data.product_id === pair) {
+//         setprice(data.price);
+//       }
+//     },
+   
+//   }, [pair]);
+
+//   return (
+//     <div>Home</div>
+//   )
 // }
-
-// export default Table;
