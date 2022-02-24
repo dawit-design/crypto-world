@@ -12,8 +12,8 @@ function App() {
     <div className="App">
        <div class="Crypto List">
         
-          <Coin />
           <Catagory /> 
+          {/* <Coin /> */}
         
        </div>
     </div>

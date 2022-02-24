@@ -1,50 +1,121 @@
+import React, { useState, useEffect, useRef } from "react";
+import Dashboard from "./Dashboard";
+import { formatData } from "../services/index";
+// import "./styles.css";
 
-// import React, {useState, useEffect} from 'react'
-// import axios from 'axios'
-// import {catagoryApi} from '../services/index'
+function Catagory() {
+  const [currencies, setcurrencies] = useState([]);
+  const [pair, setpair] = useState("");
+  const [price, setprice] = useState("0.00");
+  const [pastData, setpastData] = useState({});
+  const ws = useRef(null);
 
-// export default function Catagory() {
-//     const [data, setData] = useState([])
+  let first = useRef(false);
+  const url = "https://api.pro.coinbase.com";
 
-//     useEffect(() => {
-//       const getData = async () => {
-//       const response = await axios.get(catagoryApi)
-//       console.log(response.data)
-//       setData(response.data)
-      
-      
-//     }
-//     getData()
-//   },[])
-//   return (
-//     <div>Catagory</div>
-//   )
-// }
+  useEffect(() => {
+    ws.current = new WebSocket("wss://ws-feed.pro.coinbase.com");
 
-import {useEffect, useState} from 'react';
-import {useParams, useNavigate} from "react-router-dom"
+    let pairs = [];
 
-import React from 'react'
+    const apiCall = async () => {
+      await fetch(url + "/products")
+        .then((res) => res.json())
+        .then((data) => (pairs = data));
 
-export default function Catagory(props) {
-
-    const [change, setChange] = useState([])
-    const params = useParams()
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if(props.currencies.length > 0 && params.id){
-            const currencyFind = props.currencies.find((currency) => currency.id === params.id)
-            console.log('currency find', currencyFind)
-            if(currencyFind){
-                setChange(currencyFind.price_change_24h)
-            }
+      let filtered = pairs.filter((pair) => {
+        if (pair.quote_currency === "USD") {
+          return pair;
         }
-        
-    }, []);
+      });
+
+      filtered = filtered.sort((a, b) => {
+        if (a.base_currency < b.base_currency) {
+          return -1;
+        }
+        if (a.base_currency > b.base_currency) {
+          return 1;
+        }
+        return 0;
+      });
+
+      setcurrencies(filtered);
+
+      first.current = true;
+    };
+
+    apiCall();
+  }, []);
+
+  useEffect(() => {
+    if (!first.current) {
+      return;
+    }
+
+    let msg = {
+      type: "subscribe",
+      product_ids: [pair],
+      channels: ["ticker"]
+    };
+    let jsonMsg = JSON.stringify(msg);
+    ws.current.send(jsonMsg);
+
+    let historicalDataURL = `${url}/products/${pair}/candles?granularity=86400`;
+    const fetchHistoricalData = async () => {
+      let dataArr = [];
+      await fetch(historicalDataURL)
+        .then((res) => res.json())
+        .then((data) => (dataArr = data));
+
+      let formattedData = formatData(dataArr);
+      console.log("Dawit", formattedData)
+      setpastData(formattedData);
+    };
+
+    fetchHistoricalData();
+
+    ws.current.onmessage = (e) => {
+      let data = JSON.parse(e.data);
+      if (data.type !== "ticker") {
+        return;
+      }
+
+      if (data.product_id === pair) {
+        setprice(data.price);
+      }
+    // console.log("bry", data)
+    };
+  }, [pair]);
+
+  const handleSelect = (e) => {
+    let unsubMsg = {
+      type: "unsubscribe",
+      product_ids: [pair],
+      channels: ["ticker"]
+    };
+    let unsub = JSON.stringify(unsubMsg);
+
+    ws.current.send(unsub);
+
+    setpair(e.target.value);
+    // console.log('Try this', unsub)
+  };
   return (
-    <div className="category">
-        <h2>price change{change}</h2>
+    <div className="container">
+      {
+        <select name="currency" value={pair} onChange={handleSelect}>
+          {currencies.map((cur, idx) => {
+            return (
+              <option key={idx} value={cur.id}>
+                {cur.display_name}
+              </option>
+            );
+          })}
+        </select>
+      }
+      {/* <Dashboard price={price} data={pastData} /> */}
     </div>
-  )
+  );
 }
+
+export default Catagory;
