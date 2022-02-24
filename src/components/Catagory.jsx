@@ -3,12 +3,11 @@ import Dashboard from "./Dashboard";
 import { formatData } from "../services/utils";
 import "./styles.css";
 
-function Catagory() {
+export default function App() {
   const [currencies, setcurrencies] = useState([]);
   const [pair, setpair] = useState("");
   const [price, setprice] = useState("0.00");
   const [pastData, setpastData] = useState({});
-
   const ws = useRef(null);
 
   let first = useRef(false);
@@ -23,7 +22,7 @@ function Catagory() {
       await fetch(url + "/products")
         .then((res) => res.json())
         .then((data) => (pairs = data));
-
+      
       let filtered = pairs.filter((pair) => {
         if (pair.quote_currency === "USD") {
           return pair;
@@ -40,7 +39,7 @@ function Catagory() {
         return 0;
       });
 
-      console.log("fuck you", filtered)
+      
       setcurrencies(filtered);
 
       first.current = true;
@@ -49,12 +48,13 @@ function Catagory() {
     apiCall();
   }, []);
 
-// console.log("please work", formatData)
   useEffect(() => {
     if (!first.current) {
+      
       return;
     }
 
+    
     let msg = {
       type: "subscribe",
       product_ids: [pair],
@@ -69,8 +69,7 @@ function Catagory() {
       await fetch(historicalDataURL)
         .then((res) => res.json())
         .then((data) => (dataArr = data));
-
-    //helper function to format data that will be implemented later
+      
       let formattedData = formatData(dataArr);
       setpastData(formattedData);
     };
@@ -82,13 +81,13 @@ function Catagory() {
       if (data.type !== "ticker") {
         return;
       }
-    //every time we receive an even from the websocket for our currency pair, update the price in state
+
       if (data.product_id === pair) {
         setprice(data.price);
       }
     };
   }, [pair]);
-  
+
   const handleSelect = (e) => {
     let unsubMsg = {
       type: "unsubscribe",
@@ -101,7 +100,6 @@ function Catagory() {
 
     setpair(e.target.value);
   };
-  
   return (
     <div className="container">
       {
@@ -119,5 +117,3 @@ function Catagory() {
     </div>
   );
 }
-
-export default Catagory;
