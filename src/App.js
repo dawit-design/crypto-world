@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Coin from './components/Coin'
 import Catagory from './components/Catagory'
-import Home from './components/Home'
+
 
 function App() {
   
@@ -12,8 +12,8 @@ function App() {
     <div className="App">
        <div class="Crypto List">
         
-          <Catagory/> 
-         <Coin />
+          <Coin />
+          {/* <Catagory/>  */}
         
        </div>
     </div>
