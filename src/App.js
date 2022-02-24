@@ -13,7 +13,7 @@ function App() {
        <div class="Crypto List">
         
           <Coin />
-          {/* <Catagory/>  */}
+          <Catagory /> 
         
        </div>
     </div>
