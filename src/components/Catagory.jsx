@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Dashboard from "./Dashboard";
-import { formatData } from "../services/index";
-// import "./styles.css";
+import { formatData } from "../services/utils";
+import "./styles.css";
 
 function Catagory() {
   const [currencies, setcurrencies] = useState([]);
   const [pair, setpair] = useState("");
   const [price, setprice] = useState("0.00");
   const [pastData, setpastData] = useState({});
+
   const ws = useRef(null);
 
   let first = useRef(false);
@@ -39,6 +40,7 @@ function Catagory() {
         return 0;
       });
 
+      console.log("fuck you", filtered)
       setcurrencies(filtered);
 
       first.current = true;
@@ -47,6 +49,7 @@ function Catagory() {
     apiCall();
   }, []);
 
+// console.log("please work", formatData)
   useEffect(() => {
     if (!first.current) {
       return;
@@ -67,8 +70,8 @@ function Catagory() {
         .then((res) => res.json())
         .then((data) => (dataArr = data));
 
+    //helper function to format data that will be implemented later
       let formattedData = formatData(dataArr);
-      console.log("Dawit", formattedData)
       setpastData(formattedData);
     };
 
@@ -79,14 +82,13 @@ function Catagory() {
       if (data.type !== "ticker") {
         return;
       }
-
+    //every time we receive an even from the websocket for our currency pair, update the price in state
       if (data.product_id === pair) {
         setprice(data.price);
       }
-    // console.log("bry", data)
     };
   }, [pair]);
-
+  
   const handleSelect = (e) => {
     let unsubMsg = {
       type: "unsubscribe",
@@ -98,8 +100,8 @@ function Catagory() {
     ws.current.send(unsub);
 
     setpair(e.target.value);
-    // console.log('Try this', unsub)
   };
+  
   return (
     <div className="container">
       {
@@ -113,7 +115,7 @@ function Catagory() {
           })}
         </select>
       }
-      {/* <Dashboard price={price} data={pastData} /> */}
+      <Dashboard price={price} data={pastData} />
     </div>
   );
 }
