@@ -1,11 +1,11 @@
 // import {Link} from "react-router-dom";
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Table} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 import {api} from '../services/index'
 
 function Coin(){
-    const [currencies, setCurrencies] = useState([])
+   const [currencies, setCurrencies] = useState([])
    const [search, setSearch] = useState("")
    const [filterCurrency, setFilterCurrency] = useState([])
   useEffect(() => {
@@ -16,7 +16,6 @@ function Coin(){
       if(response.data) {
           setFilterCurrency(
           response.data.filter((currency) => {
-            // console.log("shoot me now");
             return currency.name?.toLowerCase().includes(search.toLocaleLowerCase());
           })
         );
@@ -50,22 +49,22 @@ function Coin(){
             paddingLeft: 10
             }}
         />
-                <Table  striped bordered hover variant="dark">
-                    <thead>
+                <Table  bordered hover variant="#010203"  >
+                    <thead style={{align: 'center', color: "white", cursor: 'pointer'}}>
                         <tr>
                         <th>Name</th>
                         <th>Last 24</th>
                         <th>Price</th>
                         <th>Change</th>
-                        <th>Marekt Cap</th>
+                        <th>Market Cap</th>
                         </tr>
                     </thead>
-                    <tbody style={{align: 'center', }}>
+                    <tbody style={{align: 'center', color: "white", cursor: 'pointer' }}>
                             {filterCurrency.map((currency) => (
                                 <tr key={currency.id}>
                                 <td><img src={currency.image} style={{width: 25, height: 25, marginRight: 10}}/> {currency.symbol}</td>
-                                <td>{formatDollar(currency.current_price, 20)}</td>
                                 <td ><span className={currency.price_change_24h > 0 ?( 'text-success'): 'text-danger' }> {currency.price_change_24h.toFixed(2)}</span></td>
+                                <td>{formatDollar(currency.current_price, 20)}</td>
                                 <td ><span className={currency.price_change_percentage_24h > 0 ?( 'text-success'): 'text-danger' }> {currency.price_change_percentage_24h.toFixed(2)} % </span></td>
                                 <td>{formatDollar(currency.market_cap_change_24h, 12)}</td>
                                 </tr>
