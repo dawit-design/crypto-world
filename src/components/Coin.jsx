@@ -37,6 +37,7 @@ function Coin(){
     
     return (
         <div className = "coin-list">
+        <h1 style={{align: 'center', color: "white", cursor: 'pointer'}}>Crypto World</h1>
         <input 
         placeholder="Search Crypto" 
         onChange={e => setSearch(e.target.value)} 
