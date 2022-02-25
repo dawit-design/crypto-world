@@ -13,8 +13,8 @@ function App() {
   return (
     <div className="App">
        <div class="Crypto List">
-          {/* <Coin /> */}
-          <Trending />
+          {/* <Trending /> */}
+          <Coin />
        {/* <Nav />
         <Route exact path="/">  */}
         {/* </Route> */}
