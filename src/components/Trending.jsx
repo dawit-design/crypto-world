@@ -4,7 +4,7 @@ import {Table} from 'react-bootstrap';
 import {api, trendingApi, historicalDataApi, marketChartApi, catagoryApi} from '../services/index'
 
 
-export default function Trending() {
+export default function Trending(props) {
     const [trends, setTrends] = useState([])
 
     useEffect(() => {
@@ -15,7 +15,6 @@ export default function Trending() {
     }
     getTrending()
   },[])
-
   return (
     <div className="trending">
     <h1 style={{align: 'center', color: "white", cursor: 'pointer'}}>Watch List</h1>
