@@ -13,7 +13,7 @@ function Coin(){
   useEffect(() => {
       const getCoins = async () => {
       const response = await axios.get(api)
-      // console.log(response.data[0])
+      console.log(response.data[0])
       setCurrencies(response.data)
       if(response.data) {
           setFilterCurrency(
