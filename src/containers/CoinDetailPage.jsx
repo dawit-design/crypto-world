@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HistoryChart from "../components/HistoryChart";
 import CoinData from "../components/CoinData";
-import {coingecko} from "../services/index";
+import coinGecko from "../services/coinGecko";
 
 const CoinDetailPage = () => {
   const { id } = useParams();
@@ -17,37 +17,38 @@ const CoinDetailPage = () => {
       };
     });
   };
-
+// console.log(formatData)
   useEffect(() => {
     const fetchData = async () => {
+    
       setIsLoading(true);
       const [day, week, year, detail] = await Promise.all([
-        coingecko.get(`/coins/${id}/market_chart/`, {
+        coinGecko.get(`/coins/${id}/market_chart/`, {
           params: {
             vs_currency: "usd",
-            days: "1",
+            days: "1", 
           },
         }),
-        coingecko.get(`/coins/${id}/market_chart/`, {
+        coinGecko.get(`/coins/${id}/market_chart/`, {
           params: {
             vs_currency: "usd",
             days: "7",
           },
         }),
-        coingecko.get(`/coins/${id}/market_chart/`, {
+        coinGecko.get(`/coins/${id}/market_chart/`, {
           params: {
             vs_currency: "usd",
             days: "365",
           },
         }),
-        coingecko.get("/coins/markets/", {
+        coinGecko.get("/coins/markets/", {
           params: {
             vs_currency: "usd",
             ids: id,
           },
         }),
       ]);
-      console.log(day);
+      console.log('day')
 
       setCoinData({
         day: formatData(day.data.prices),

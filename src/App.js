@@ -1,28 +1,27 @@
 import './App.css';
-import { Link, Route, BrowserRouter } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Coin from './components/Coin'
-import Trending from './components/Trending'
-import CoinDetailPage from './containers/CoinDetailPage'
+import React from "react";
+import { BrowserRouter, Route,Routes} from "react-router-dom";
+import CoinDetailPage from "./containers/CoinDetailPage";
+import CoinSummaryPage from "./containers/CoinSummaryPage";
+import Header from "./components/Header";
+import { WatchListContextProvider } from "./context/watchListContext";
 
-function App() {
-  
-
-
+const App = () => {
   return (
-    <div className="App">
-       <div class="Crypto List">
-       <h1 style={{align: 'center', color: "white", cursor: 'pointer'}}>Crypto World</h1>
-       {/* <BrowserRouter>  */}
-       {/* <Route exact path="/" component={Coin} /> */}
-       {/* <Route exact path="/coins/:id" component={CoinDetailPage} /> */}
-          {/* <Trending /> */}
-          <Coin />
-         {/* </BrowserRouter>  */}
+    <div className="container">
+      <WatchListContextProvider>
         
-       </div>
+          <Header />
+          <Routes>
+          <Route exact path="/" element={<Coin />} />
+          <Route path="/coins/:id" element={<CoinDetailPage />} />
+          </Routes>
+       
+      </WatchListContextProvider>
     </div>
   );
-}
+};
 
 export default App;

@@ -1,6 +1,6 @@
 export const api = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd`
 
-export const coingecko = `https://api.coingecko.com/api/v3/`
+// export const coingecko = `https://api.coingecko.com/api/v3/`
 
 export const historicalDataApi = `https://api.coingecko.com/api/v3/coins/{id}/history`
 
