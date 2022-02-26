@@ -17,6 +17,7 @@
 //             paddingLeft: 10
 //             }}
 //         />
+//             <Link to={`/coins/${coin.id}`} style={{ textDecoration: 'none'}}>
 //                 <Table  bordered hover variant="#010203"  >
 //                     <thead style={{align: 'center', color: "White", cursor: 'pointer', backgroundColor: '#010203'}}>
 //                         <tr>
@@ -30,16 +31,15 @@
 //                     <tbody style={{align: 'center', color: "white", cursor: 'pointer', backgroundColor: '#010203' }}>
 //                             {filterCoins.map((coin) => (
 //                                 <tr key={coin.id}>
-//             <Link to={`/coins/${coin.id}`} style={{ textDecoration: 'none'}}>
 //                                 <td><img src={coin.image} style={{width: 25, height: 25, marginRight: 10}}/> {coin.symbol}</td>
 //                                 <td ><span className={coin.price_change_24h > 0 ?( 'text-success'): 'text-danger' }> {coin.price_change_24h.toFixed(2)}</span></td>
 //                                 <td>{formatDollar(coin.current_price, 20)}</td>
 //                                 <td ><span className={coin.price_change_percentage_24h  > 0  ?( 'text-success' ) : 'text-danger' }> {coin.price_change_percentage_24h.toFixed(2)} % </span></td>
 //                                 <td>{formatDollar(coin.market_cap_change_24h, 12)}</td>
-//             </Link>
 //                                 </tr>
 //                             ))}
 //                     </tbody>
+//             </Link>
 //                 </Table>
 //         </div>
 //     );

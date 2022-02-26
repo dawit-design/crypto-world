@@ -40,7 +40,7 @@ const Coin = () => {
             maximumSignificantDigits
         })
         .format(number)
-        console.log(formatDollar)
+        // console.log(formatDollar)
 
   const renderCoins = () => {
     if (isLoading) {
@@ -54,6 +54,9 @@ const Coin = () => {
         placeholder="Search Crypto" 
         onChange={e => setSearch(e.target.value)} 
         style={{
+            width: 255,
+            height: 38,
+            alignItems: 'center',
             textAlign: 'center',
             borderColor: 'black',
             fontSize: 18,
@@ -62,7 +65,7 @@ const Coin = () => {
             paddingLeft: 10
             }}
         />
-        <Link to="coins/id" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+        <Link to={`/coins/id`} style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <Table  bordered hover variant="#010203"  >
                     <thead style={{align: 'center', color: "White", cursor: 'pointer', backgroundColor: '#010203'}}>
                         <tr>
